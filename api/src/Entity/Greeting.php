@@ -13,6 +13,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\PatchGreeting;
+use Doctrine\ORM\Mapping\Id;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * This is a dummy entity. Remove it!
@@ -34,13 +37,9 @@ use App\Controller\PatchGreeting;
 #[ORM\Entity]
 class Greeting
 {
-    /**
-     * The entity ID
-     */
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME)]
+    public string $id;
 
     /**
      * A nice person
@@ -49,8 +48,8 @@ class Greeting
     #[Assert\NotBlank]
     public string $name = '';
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->id = Uuid::v7();
     }
 }
